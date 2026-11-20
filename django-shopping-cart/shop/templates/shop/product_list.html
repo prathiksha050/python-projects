@@ -1,0 +1,42 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Shopping App - Products</title>
+    <link rel="stylesheet" href="{% static 'shop/styles.css' %}">
+</head>
+
+<body>
+
+    <h1>Available Products</h1>
+
+    <p>
+        <a href="{% url 'shop:cart_detail' %}">
+            View Cart ({{ cart_count }} items)
+        </a>
+    </p>
+
+    {% for product in products %}
+
+        <article>
+            <h2>{{ product.name }}</h2>
+
+            <p>{{ product.description }}</p>
+
+            <strong>₹{{ product.price }}</strong>
+
+            <form method="post" action="{% url 'shop:cart_add' product.id %}">
+                {% csrf_token %}
+                <button type="submit">Add to Cart</button>
+            </form>
+        </article>
+
+    {% empty %}
+
+        <p>No products are available yet.</p>
+
+    {% endfor %}
+
+</body>
+</html>
